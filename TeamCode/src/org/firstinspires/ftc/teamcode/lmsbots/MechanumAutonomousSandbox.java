@@ -55,8 +55,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
 //            driveFR.setPower(-1);
 //            driveBL.setPower(-1);
 //            sleep(2000);
-//            driveTo(-4,1)
-//            driveTo(2,-6);
+            driveTo(-4,1)
+            driveTo(2,-6);
 
             /*            driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

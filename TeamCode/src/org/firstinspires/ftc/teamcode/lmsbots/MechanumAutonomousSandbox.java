@@ -24,6 +24,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
     double globalAngle=0, localAngle=0, power = .50, correction;
+
+    // global class variables for where the robot is located on x,y axis
     private int xPos = 0;
     private int yPos = 0;
 
@@ -52,13 +54,9 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         if (opModeIsActive())
         {
             // autonomous code goes here
-//            driveFR.setPower(-1);
-//            driveBL.setPower(-1);
-//            sleep(2000);
-            driveTo(-4,1);
-            driveTo(2,-6);
+            driveTo(-47,57);
 
-            /*            driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            /*driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -69,16 +67,16 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
             driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             driveFL.setTargetPosition(4000);
-            driveFR.setTargetPosition(1200);
-            driveBL.setTargetPosition(1200);
+            driveFR.setTargetPosition(4000);
+            driveBL.setTargetPosition(4000);
             driveBR.setTargetPosition(4000);
 
             driveFL.setPower(1);
-            driveFR.setPower(0.3);
-            driveBL.setPower(0.3);
+            driveFR.setPower(1);
+            driveBL.setPower(1);
             driveBR.setPower(1);
 
-            while (opModeIsActive() && driveFL.isBusy())   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
+           while (opModeIsActive() && (driveFL.isBusy() || driveFR.isBusy()))   //leftMotor.getCurrentPosition() < leftMotor.getTargetPosition())
             {
                 telemetry.addData("encoder-fwd-left", driveFL.getCurrentPosition() + "  busy=" + driveFL.isBusy());
                 telemetry.addData("encoder-back-left", driveBL.getCurrentPosition() + "  busy=" + driveFL.isBusy());
@@ -93,8 +91,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
             driveBL.setPower(0);
             driveBR.setPower(0);
 
-            resetStartTime();
-*/
+            resetStartTime();*/
+
         }
     }
 
@@ -117,30 +115,35 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         driveBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         driveBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        double xPosition = 0;
-        double yPosition = 0;
-
         telemetry.addData("Status", "Initialization Complete");
         telemetry.update();
     }
 
     public void driveTo(int xTarget, int yTarget){
-        double encoderTicksPerInch = 1000;
+        double encoderTicksPerInch = 89.5;
         int xDiff = xTarget - xPos;
         int yDiff = yTarget - yPos;
-        double distance = encoderTicksPerInch * Math.sqrt((xDiff*xDiff)+(yDiff*yDiff));
         double heading;
+
         if (xDiff >=0){
             heading = Math.toDegrees(Math.atan2(xDiff,yDiff));
         }
-        else if (xDiff < 0 && yDiff < 0){
+        else if (yDiff < 0){
             heading = 180 + Math.toDegrees(Math.atan2(Math.abs(xDiff), Math.abs(yDiff)));
         }
-        else{
+        else {
             heading = 270 + Math.toDegrees(Math.atan2(Math.abs(yDiff), Math.abs(xDiff)));
         }
 
-        encoderDrive((int)distance,1,(int)heading);
+        // determine distance needed to travel using pythagorean theorem
+        double distance = Math.sqrt((xDiff*xDiff)+(yDiff*yDiff));
+        double encoderTicks = encoderTicksPerInch * (Math.abs(xDiff) + Math.abs(yDiff));
+        telemetry.addData("distance",(int)distance);
+        telemetry.addData("heading",heading);
+        telemetry.update();
+        sleep(3000);
+
+        encoderDrive((int)encoderTicks,1,(int)heading);
         xPos = xPos + xDiff;
         yPos = yPos + yDiff;
     }
@@ -150,6 +153,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
 
         double powerFLBR = (power*FLBRpowerRatio(heading));
         double powerFRBL = (power*FRBLpowerRatio(heading));
+
+        // encoder position has to be an integer
         int encoderFLBR = (int)(encoderTicks*powerFLBR);
         int encoderFRBL = (int)(encoderTicks*powerFRBL);
 
@@ -226,7 +231,6 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
             powerRatio = (-1 * (1-(heading/45)));
         }
 
-
         return powerRatio;
     }
 
@@ -265,7 +269,7 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         return powerRatio;
     }
 
-    // method for autonomous driving, accepts direction, motor power and time
+    // method for timed autonomous driving, accepts direction, motor power and time
     private void timedDrive(String direction, double power, int time) {
         if (direction.equals("forward")){
             driveFL.setPower(power);

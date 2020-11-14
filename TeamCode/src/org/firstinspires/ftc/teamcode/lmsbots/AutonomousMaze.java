@@ -14,10 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class AutonomousMaze extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;
     BNO055IMU imu;
-    double drivePower = 0.8;
-    double turnPower = 0.6;
     double encoderTicksPerInch = 89.5;
-    double robotDirectionInDegrees = 0;
+    double drivePower = 0.8;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -32,125 +30,12 @@ public class AutonomousMaze extends LinearOpMode {
         if (opModeIsActive())
         {
             // drive forward 24"
-            driveForward(24);
-
             // turn left 90 degrees
-            turnLeft(90);
-
             // drive forward 20"
-            driveForward(20);
-
             // turn right 90 degrees
-            turnRight(90);
-
             // drive forward 36"
-            driveForward(36);
 
         }
-    }
-
-    private void turnRight(int degrees) {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("Heading in angles",angles);
-        telemetry.addData("robotDirectionInDegrees",robotDirectionInDegrees);
-        telemetry.update();
-        sleep(1000);
-
-        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        if (robotDirectionInDegrees - degrees > -180) {
-            while (opModeIsActive() && Angle() > (robotDirectionInDegrees - degrees)){
-                driveFL.setPower(turnPower);
-                driveFR.setPower(-turnPower);
-                driveBL.setPower(turnPower);
-                driveBR.setPower(-turnPower);
-            }
-        }
-        else {
-            while (opModeIsActive() && Angle() < (360 + (robotDirectionInDegrees - degrees))){
-                driveFL.setPower(turnPower);
-                driveFR.setPower(-turnPower);
-                driveBL.setPower(turnPower);
-                driveBR.setPower(-turnPower);
-            }
-            while (opModeIsActive() && Angle() > (360 + (robotDirectionInDegrees - degrees))){
-                driveFL.setPower(turnPower);
-                driveFR.setPower(-turnPower);
-                driveBL.setPower(turnPower);
-                driveBR.setPower(-turnPower);
-            }
-        }
-
-        robotDirectionInDegrees = Angle();
-
-        driveFL.setPower(0);
-        driveFR.setPower(0);
-        driveBL.setPower(0);
-        driveBR.setPower(0);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("New heading in angles",angles);
-        telemetry.addData("New robotDirectionInDegrees",robotDirectionInDegrees);
-        telemetry.update();
-        sleep(1000);
-    }
-
-
-    private void turnLeft(int degrees) {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("Heading in angles",angles);
-        telemetry.addData("robotDirectionInDegrees",robotDirectionInDegrees);
-        telemetry.update();
-        sleep(1000);
-
-        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        if (robotDirectionInDegrees + degrees > 180) {
-            while (opModeIsActive() && Angle() > -(360 - (robotDirectionInDegrees + degrees))){
-                driveFL.setPower(-turnPower);
-                driveFR.setPower(turnPower);
-                driveBL.setPower(-turnPower);
-                driveBR.setPower(turnPower);
-            }
-            while (opModeIsActive() && Angle() < -(360 - (robotDirectionInDegrees + degrees))){
-                driveFL.setPower(-turnPower);
-                driveFR.setPower(turnPower);
-                driveBL.setPower(-turnPower);
-                driveBR.setPower(turnPower);
-            }
-        }
-        else {
-            while (opModeIsActive() && Angle() < (robotDirectionInDegrees + degrees)){
-                driveFL.setPower(-turnPower);
-                driveFR.setPower(turnPower);
-                driveBL.setPower(-turnPower);
-                driveBR.setPower(turnPower);
-            }
-        }
-
-        robotDirectionInDegrees = Angle();
-
-        driveFL.setPower(0);
-        driveFR.setPower(0);
-        driveBL.setPower(0);
-        driveBR.setPower(0);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("New heading in angles",angles);
-        telemetry.addData("New robotDirectionInDegrees",robotDirectionInDegrees);
-        telemetry.update();
-        sleep(1000);
-    }
-
-    private double Angle() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return angles.firstAngle;
     }
 
     private void driveForward(int inches) {
@@ -170,29 +55,7 @@ public class AutonomousMaze extends LinearOpMode {
         driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
 
-        driveFL.setPower(drivePower);
-        driveFR.setPower(drivePower);
-        driveBL.setPower(drivePower);
-        driveBR.setPower(drivePower);
-
-        while (driveFL.isBusy()) {
-            idle();
-        }
-
-        driveFL.setPower(0);
-        driveFR.setPower(0);
-        driveBL.setPower(0);
-        driveBR.setPower(0);
-
-        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     // robot initialization method
@@ -217,7 +80,6 @@ public class AutonomousMaze extends LinearOpMode {
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-//        parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled = false;

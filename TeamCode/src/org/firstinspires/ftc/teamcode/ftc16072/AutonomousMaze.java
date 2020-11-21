@@ -32,12 +32,11 @@ public class AutonomousMaze extends LinearOpMode {
 
         if (opModeIsActive())
         {
-            rotateLeft(90);
-
             // drive forward 24"
-            //driveForward(24);
+            driveForward(24);
 
             // turn left 90 degrees
+            rotateLeft(90);
             //turnLeft(90);
 
             // drive forward 20"

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Disabled
-@Autonomous(name = "Autonomous Maze", group = "lmsbots")
+@Autonomous(name = "Autonomous Maze2", group = "lmsbots")
 public class AutonomousMaze extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;
     BNO055IMU imu;
@@ -32,23 +32,7 @@ public class AutonomousMaze extends LinearOpMode {
 
         if (opModeIsActive())
         {
-            Orientation orientation;
-            driveFL.setPower(-turnPower);
-            driveFR.setPower(turnPower);
-            driveBL.setPower(-turnPower);
-            driveBR.setPower(turnPower);
-            while (opModeIsActive()){
-                orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                telemetry.addData("Heading", orientation.firstAngle);
-                telemetry.update();
-                if (orientation.firstAngle >= 90){
-                    break;
-                }
-            }
-            driveFL.setPower(0);
-            driveFR.setPower(0);
-            driveBL.setPower(0);
-            driveBR.setPower(0);
+            rotateLeft(90);
 
             // drive forward 24"
             //driveForward(24);
@@ -66,6 +50,26 @@ public class AutonomousMaze extends LinearOpMode {
             //driveForward(36);
 
         }
+    }
+
+    private void rotateLeft(int degrees) {
+        Orientation orientation;
+        driveFL.setPower(-turnPower);
+        driveFR.setPower(turnPower);
+        driveBL.setPower(-turnPower);
+        driveBR.setPower(turnPower);
+        while (opModeIsActive()){
+            orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("Heading", orientation.firstAngle);
+            telemetry.update();
+            if (orientation.firstAngle >= degrees){
+                break;
+            }
+        }
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
     }
 
     private void turnRight(int degrees) {

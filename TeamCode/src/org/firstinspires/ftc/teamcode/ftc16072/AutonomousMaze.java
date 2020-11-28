@@ -10,14 +10,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-@Disabled
+//@Disabled
 @Autonomous(name = "Autonomous Maze2", group = "lmsbots")
 public class AutonomousMaze extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;
     BNO055IMU imu;
     double drivePower = 0.8;
     double turnPower = 0.6;
-    double encoderTicksPerInch = 89.5;
+    int wheelDiameter = 4;
+    double wheelCircumference = wheelDiameter * Math.PI;
+    int encoderTicksPerRotation = 1125;
+    double encoderTicksPerInch = encoderTicksPerRotation / wheelCircumference;
     double robotHeading = 0;
 
     @Override
@@ -57,6 +60,7 @@ public class AutonomousMaze extends LinearOpMode {
         driveFR.setPower(turnPower);
         driveBL.setPower(-turnPower);
         driveBR.setPower(turnPower);
+
         while (opModeIsActive()){
             orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             telemetry.addData("Heading", orientation.firstAngle);

@@ -54,7 +54,7 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         if (opModeIsActive())
         {
             // autonomous code goes here
-            driveTo(-47,57);
+            driveTo(-48,24);
 
             /*driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -120,7 +120,10 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
     }
 
     public void driveTo(int xTarget, int yTarget){
-        double encoderTicksPerInch = 89.5;
+        int wheelDiameter = 4;
+        double wheelCircumference = wheelDiameter * Math.PI;
+        int encoderTicksPerRotation = 1125;
+        double encoderTicksPerInch = encoderTicksPerRotation / wheelCircumference;
         int xDiff = xTarget - xPos;
         int yDiff = yTarget - yPos;
         double heading;

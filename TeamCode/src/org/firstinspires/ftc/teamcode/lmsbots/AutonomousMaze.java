@@ -30,10 +30,19 @@ public class AutonomousMaze extends LinearOpMode {
         if (opModeIsActive())
         {
             // drive forward 24"
+            // driveForward(24);
+
             // turn left 90 degrees
+
+
             // drive forward 20"
+            // driveForward(20);
+
             // turn right 90 degrees
+
+
             // drive forward 36"
+            // driveForward(36);
 
         }
     }
@@ -55,6 +64,24 @@ public class AutonomousMaze extends LinearOpMode {
         driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(drivePower);
+        driveFR.setPower(drivePower);
+        driveBL.setPower(drivePower);
+        driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
 
     }
 

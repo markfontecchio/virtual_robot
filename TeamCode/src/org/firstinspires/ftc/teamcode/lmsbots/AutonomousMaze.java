@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.lmsbots;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -30,18 +31,17 @@ public class AutonomousMaze extends LinearOpMode {
         if (opModeIsActive())
         {
             // drive forward 24"
-            // driveForward(24);
+             driveForward(24);
 
             // turn left 90 degrees
 
             // drive forward 20"
-            // driveForward(20);
+             driveForward(20);
 
             // turn right 90 degrees
 
-
             // drive forward 36"
-            // driveForward(36);
+             driveForward(36);
 
         }
     }

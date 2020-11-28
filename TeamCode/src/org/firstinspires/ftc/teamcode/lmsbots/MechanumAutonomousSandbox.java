@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.lmsbots;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Axis;
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 
 import javafx.geometry.Pos;
-
+@Disabled
 @Autonomous(name = "Mechanum Autonomous Sandbox", group = "lmsbots")
 public class MechanumAutonomousSandbox extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;

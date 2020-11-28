@@ -34,7 +34,6 @@ public class AutonomousMaze extends LinearOpMode {
 
             // turn left 90 degrees
 
-
             // drive forward 20"
             // driveForward(20);
 

@@ -37,21 +37,148 @@ public class AutonomousMaze extends LinearOpMode {
         {
             // drive forward 24"
             driveForward(24);
+            driveBackward(24);
+            strafeLeft(24);
+            strafeRight(24);
 
             // turn left 90 degrees
-            turnLeft(90);
+            //turnLeft(90);
 
             // drive forward 20"
-            driveForward(20);
+            //driveForward(20);
 
             // turn right 90 degrees
-            turnRight(90);
+            //turnRight(90);
 
             // drive forward 36"
-           driveForward(36);
+           //driveForward(36);
 
         }
     }
+
+    private void strafeRight(int inches) {
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(drivePower);
+        driveFR.setPower(drivePower);
+        driveBL.setPower(drivePower);
+        driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void strafeLeft(int inches) {
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(drivePower);
+        driveFR.setPower(drivePower);
+        driveBL.setPower(drivePower);
+        driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void driveBackward(int inches) {
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(drivePower);
+        driveFR.setPower(drivePower);
+        driveBL.setPower(drivePower);
+        driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
 
     private void driveForward(int inches) {
 

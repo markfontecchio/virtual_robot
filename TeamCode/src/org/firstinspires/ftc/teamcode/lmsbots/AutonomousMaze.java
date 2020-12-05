@@ -31,7 +31,7 @@ public class AutonomousMaze extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        // run until the end of the match (driver presses STOP)
+        // run until the end of the match (when driver presses STOP)
 
         if (opModeIsActive())
         {

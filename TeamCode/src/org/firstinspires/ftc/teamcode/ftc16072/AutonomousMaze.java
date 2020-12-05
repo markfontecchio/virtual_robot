@@ -18,8 +18,8 @@ public class AutonomousMaze extends LinearOpMode {
     double drivePower = 0.8;
     double turnPower = 0.6;
     int wheelDiameter = 4;
-    double wheelCircumference = wheelDiameter * Math.PI;
     int encoderTicksPerRotation = 1125;
+    double wheelCircumference = wheelDiameter * Math.PI;
     double encoderTicksPerInch = encoderTicksPerRotation / wheelCircumference;
     double robotHeading = 0;
 
@@ -39,49 +39,23 @@ public class AutonomousMaze extends LinearOpMode {
             driveForward(24);
 
             // turn left 90 degrees
-            rotateLeft(90);
-            //turnLeft(90);
+            //   turnLeft(90);
 
             // drive forward 20"
-            //driveForward(20);
+            //   driveForward(20);
 
             // turn right 90 degrees
-            //turnRight(90);
+            //   turnRight(90);
 
             // drive forward 36"
-            //driveForward(36);
+            //   driveForward(36);
 
         }
     }
 
-    private void rotateLeft(int degrees) {
-        Orientation orientation;
-        driveFL.setPower(-turnPower);
-        driveFR.setPower(turnPower);
-        driveBL.setPower(-turnPower);
-        driveBR.setPower(turnPower);
 
-        while (opModeIsActive()){
-            orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("Heading", orientation.firstAngle);
-            telemetry.update();
-            if (orientation.firstAngle >= degrees){
-                break;
-            }
-        }
-        driveFL.setPower(0);
-        driveFR.setPower(0);
-        driveBL.setPower(0);
-        driveBR.setPower(0);
-    }
 
     private void turnRight(int degrees) {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("Heading in angles",angles);
-        telemetry.addData("robotHeading",robotHeading);
-        telemetry.update();
-        sleep(1000);
-
         driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -117,21 +91,9 @@ public class AutonomousMaze extends LinearOpMode {
         driveBL.setPower(0);
         driveBR.setPower(0);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("New heading in angles",angles);
-        telemetry.addData("New robotHeading",robotHeading);
-        telemetry.update();
-        sleep(1000);
     }
 
-
     private void turnLeft(int degrees) {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("Heading in angles",angles);
-        telemetry.addData("robotHeading",robotHeading);
-        telemetry.update();
-        sleep(1000);
-
         driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -166,12 +128,6 @@ public class AutonomousMaze extends LinearOpMode {
         driveFR.setPower(0);
         driveBL.setPower(0);
         driveBR.setPower(0);
-
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("New heading in angles",angles);
-        telemetry.addData("New robotHeading",robotHeading);
-        telemetry.update();
-        sleep(1000);
     }
 
     private double Angle() {

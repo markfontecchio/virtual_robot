@@ -35,23 +35,11 @@ public class AutonomousMaze extends LinearOpMode {
 
         if (opModeIsActive())
         {
-            // drive forward 24"
-            driveForward(24);
-            driveBackward(24);
-            strafeLeft(24);
-            strafeRight(24);
+            // drive forward 48"
+            driveForward(48);
 
-            // turn left 90 degrees
-            //turnLeft(90);
-
-            // drive forward 20"
-            //driveForward(20);
-
-            // turn right 90 degrees
-            //turnRight(90);
-
-            // drive forward 36"
-           //driveForward(36);
+            // strafe right 36"
+            strafeRight(36);
 
         }
     }
@@ -73,13 +61,13 @@ public class AutonomousMaze extends LinearOpMode {
         driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
         driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
 
         driveFL.setPower(drivePower);
-        driveFR.setPower(drivePower);
-        driveBL.setPower(drivePower);
+        driveFR.setPower(-drivePower);
+        driveBL.setPower(-drivePower);
         driveBR.setPower(drivePower);
 
         while (driveFL.isBusy()) {
@@ -113,15 +101,15 @@ public class AutonomousMaze extends LinearOpMode {
         driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
         driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
         driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
 
-        driveFL.setPower(drivePower);
+        driveFL.setPower(-drivePower);
         driveFR.setPower(drivePower);
         driveBL.setPower(drivePower);
-        driveBR.setPower(drivePower);
+        driveBR.setPower(-drivePower);
 
         while (driveFL.isBusy()) {
             idle();
@@ -154,15 +142,15 @@ public class AutonomousMaze extends LinearOpMode {
         driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
-        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
 
-        driveFL.setPower(drivePower);
-        driveFR.setPower(drivePower);
-        driveBL.setPower(drivePower);
-        driveBR.setPower(drivePower);
+        driveFL.setPower(-drivePower);
+        driveFR.setPower(-drivePower);
+        driveBL.setPower(-drivePower);
+        driveBR.setPower(-drivePower);
 
         while (driveFL.isBusy()) {
             idle();

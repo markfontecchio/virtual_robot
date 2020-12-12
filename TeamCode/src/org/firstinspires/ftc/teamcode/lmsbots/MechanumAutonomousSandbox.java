@@ -11,14 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.ftc16072.Robot;
-import org.firstinspires.ftc.robotcore.external.navigation.Axis;
-import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 
-import javafx.geometry.Pos;
-@Disabled
+//@Disabled
 @Autonomous(name = "Mechanum Autonomous Sandbox", group = "lmsbots")
 public class MechanumAutonomousSandbox extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;
@@ -43,7 +37,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         {
             // autonomous code goes here
 //            driveTo(24,48);
-            driveTo2(24,48);
+            driveTo2(48,36);
+            driveTo2(0, 0);
 
         }
     }
@@ -51,39 +46,172 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
     private void driveTo2(int xTarget, int yTarget) {
         int xDiff = xTarget - xPos;
         int yDiff = yTarget - yPos;
-        double targetHeading, distance;
+
+        // determine distance needed to travel using pythagorean theorem
+        double distance = Math.sqrt((xDiff*xDiff)+(yDiff*yDiff));
+
+        double targetHeading;
         Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double heading = orientation.firstAngle;
 
-        // determine which way robot must face before driving
-        if (xDiff >=0){
-            targetHeading = Math.toDegrees(Math.atan2(xDiff,yDiff));
+        if (xDiff == 0){
+            if (yDiff >= 0){
+                driveForward(yDiff);
+            }
+            else {
+                driveBackward(-yDiff);
+            }
         }
-        else if (yDiff < 0){
-            targetHeading = 180 + Math.toDegrees(Math.atan2(Math.abs(xDiff), Math.abs(yDiff)));
+        else if (yDiff == 0){
+            if (xDiff >= 0){
+                strafeRight(xDiff);
+            }
+            else {
+                strafeLeft(-xDiff);
+            }
         }
+
+        else if (xDiff > 0){
+            if (yDiff > 0){
+                targetHeading = Math.toDegrees(Math.atan2(xDiff,yDiff));
+
+                telemetry.addData("Going to"," " + xTarget + ", " + yTarget);
+                telemetry.addData("targetHeading",targetHeading);
+                telemetry.addData("distance",(int)distance);
+                telemetry.update();
+                sleep(3000);
+
+                turnRight(targetHeading);
+                driveForward(distance);
+                turnLeft(targetHeading);
+            }
+            else if (yDiff < 0){
+                targetHeading = 180 - Math.toDegrees(Math.atan2(xDiff,yDiff));
+
+                telemetry.addData("Going to"," " + xTarget + ", " + yTarget);
+                telemetry.addData("targetHeading",targetHeading);
+                telemetry.addData("distance",(int)distance);
+                telemetry.update();
+                sleep(3000);
+
+                turnLeft(targetHeading);
+                driveBackward(distance);
+                turnRight(targetHeading);
+            }
+
+        }
+        else if (yDiff > 0){
+                targetHeading = -Math.toDegrees(Math.atan2(xDiff,yDiff));
+
+                telemetry.addData("Going to"," " + xTarget + ", " + yTarget);
+                telemetry.addData("targetHeading",targetHeading);
+                telemetry.addData("distance",(int)distance);
+                telemetry.update();
+                sleep(3000);
+
+                turnLeft(targetHeading);
+                driveForward(distance);
+                turnRight(targetHeading);
+            }
         else {
-            targetHeading = 270 + Math.toDegrees(Math.atan2(Math.abs(yDiff), Math.abs(xDiff)));
+            targetHeading = 180 + Math.toDegrees(Math.atan2(xDiff,yDiff));
+
+            telemetry.addData("Going to"," " + xTarget + ", " + yTarget);
+            telemetry.addData("targetHeading",targetHeading);
+            telemetry.addData("distance",(int)distance);
+            telemetry.update();
+            sleep(3000);
+
+            turnRight(targetHeading);
+            driveBackward(distance);
+            turnLeft(targetHeading);
         }
-
-        // determine distance needed to travel using pythagorean theorem
-        distance = Math.sqrt((xDiff*xDiff)+(yDiff*yDiff));
-//        encoderTicks = encoderTicksPerInch * (Math.abs(xDiff) + Math.abs(yDiff));
-        //encoderTicks = encoderTicksPerInch * distance;
-        telemetry.addData("distance",(int)distance);
-        telemetry.addData("heading",heading);
-        telemetry.addData("encoderTicksPerInch",encoderTicksPerInch);
-        telemetry.update();
-        sleep(3000);
-
-        turnRight(targetHeading);
-        driveForward(distance);
-
-
 
         xPos = xPos + xDiff;
         yPos = yPos + yDiff;
 
+    }
+
+    private void strafeRight(int inches) {
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition((int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(drivePower);
+        driveFR.setPower(-drivePower);
+        driveBL.setPower(-drivePower);
+        driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void strafeLeft(int inches) {
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition((int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(-drivePower);
+        driveFR.setPower(drivePower);
+        driveBL.setPower(drivePower);
+        driveBR.setPower(-drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private void driveForward(double inches) {
@@ -112,6 +240,48 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         driveFR.setPower(drivePower);
         driveBL.setPower(drivePower);
         driveBR.setPower(drivePower);
+
+        while (driveFL.isBusy()) {
+            idle();
+        }
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    private void driveBackward(double inches) {
+
+        driveFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        driveFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        driveBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        driveFL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveFR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBL.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+        driveBR.setTargetPosition(-(int)(inches * encoderTicksPerInch));
+
+        driveFL.setPower(-drivePower);
+        driveFR.setPower(-drivePower);
+        driveBL.setPower(-drivePower);
+        driveBR.setPower(-drivePower);
 
         while (driveFL.isBusy()) {
             idle();
@@ -315,6 +485,43 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         telemetry.addData("Back Left Drive Motor Power", driveBL.getPower());
         telemetry.addData("Back Right Drive Motor Power", driveBR.getPower());
         telemetry.update();
+    }
+
+    private void turnLeft(double degrees) {
+        driveFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        driveBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        if (robotHeading + degrees > 180) {
+            while (opModeIsActive() && Angle() > -(360 - (robotHeading + degrees))){
+                driveFL.setPower(-turnPower);
+                driveFR.setPower(turnPower);
+                driveBL.setPower(-turnPower);
+                driveBR.setPower(turnPower);
+            }
+            while (opModeIsActive() && Angle() < -(360 - (robotHeading + degrees))){
+                driveFL.setPower(-turnPower);
+                driveFR.setPower(turnPower);
+                driveBL.setPower(-turnPower);
+                driveBR.setPower(turnPower);
+            }
+        }
+        else {
+            while (opModeIsActive() && Angle() < (robotHeading + degrees)){
+                driveFL.setPower(-turnPower);
+                driveFR.setPower(turnPower);
+                driveBL.setPower(-turnPower);
+                driveBR.setPower(turnPower);
+            }
+        }
+
+        robotHeading = Angle();
+
+        driveFL.setPower(0);
+        driveFR.setPower(0);
+        driveBL.setPower(0);
+        driveBR.setPower(0);
     }
 
     private void turnRight(double degrees) {

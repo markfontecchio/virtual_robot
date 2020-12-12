@@ -35,13 +35,19 @@ public class AutonomousMaze extends LinearOpMode {
 
         if (opModeIsActive())
         {
+            driveTo(36, 48);
+
             // drive forward 48"
-            driveForward(48);
+            //driveForward(48);
 
             // strafe right 36"
-            strafeRight(36);
+            //strafeRight(36);
 
         }
+    }
+
+    private void driveTo(int xTarget, int yTarget) {
+        
     }
 
     private void strafeRight(int inches) {

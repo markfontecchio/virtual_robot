@@ -38,7 +38,7 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
             // autonomous code goes here
 //            driveTo(24,48);
             driveTo2(48,36);
-            driveTo2(0, 0);
+            //driveTo2(0, 0);
 
         }
     }

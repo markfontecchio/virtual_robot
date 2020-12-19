@@ -22,6 +22,7 @@ public class AutonomousMaze extends LinearOpMode {
     double wheelCircumference = wheelDiameter * Math.PI;
     double encoderTicksPerInch = encoderTicksPerRotation / wheelCircumference;
     double robotHeading = 0;
+    int xPos = 0, yPos = 0;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -49,8 +50,18 @@ public class AutonomousMaze extends LinearOpMode {
 
     private void driveTo(int xTarget, int yTarget) {
 
+        telemetry.addData("xPos", xPos);
+        telemetry.addData("yPos", yPos);
+        telemetry.update();
+        sleep(4000);
+
         driveForward(yTarget);
         strafeRight(xTarget);
+
+        telemetry.addData("xPos", xPos);
+        telemetry.addData("yPos", yPos);
+        telemetry.update();
+        sleep(4000);
 
     }
 

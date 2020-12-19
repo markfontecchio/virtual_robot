@@ -36,8 +36,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         if (opModeIsActive())
         {
             // autonomous code goes here
-            driveTo(24,48);
-            driveTo2(48,36);
+            driveTo(24,48);  // robot doesn't rotate
+            driveTo2(-40,-60); // robot rotates and then drives forward/backward toward destination
             //driveTo2(0, 0);
 
         }
@@ -55,20 +55,10 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         double heading = orientation.firstAngle;
 
         if (xDiff == 0){
-            if (yDiff >= 0){
-                driveForward(yDiff);
-            }
-            else {
-                driveBackward(-yDiff);
-            }
+            driveForward(yDiff);
         }
         else if (yDiff == 0){
-            if (xDiff >= 0){
-                strafeRight(xDiff);
-            }
-            else {
-                strafeLeft(-xDiff);
-            }
+            strafeRight(xDiff);
         }
 
         else if (xDiff > 0){
@@ -127,8 +117,8 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
             turnLeft(targetHeading);
         }
 
-        xPos = xPos + xDiff;
-        yPos = yPos + yDiff;
+        xPos = xTarget;
+        yPos = yTarget;
 
     }
 

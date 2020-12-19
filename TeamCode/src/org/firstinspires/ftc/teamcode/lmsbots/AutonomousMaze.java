@@ -37,7 +37,7 @@ public class AutonomousMaze extends LinearOpMode {
         if (opModeIsActive())
         {
             driveTo(36, 48);
-            //driveTo(-24,-24);
+            driveTo(-24,-24);
 
             // drive forward 48"
             //driveForward(48);
@@ -53,22 +53,13 @@ public class AutonomousMaze extends LinearOpMode {
         int xDiff = xTarget - xPos;
         int yDiff = yTarget - yPos;
 
-        telemetry.addData("xPos", xPos);
-        telemetry.addData("yPos", yPos);
-        telemetry.update();
-        sleep(4000);
-
         // move the robot
         driveForward(yTarget);
         strafeRight(xTarget);
 
         // update the current position of the robot
-        // put some code here to update position of the robot
-
-        telemetry.addData("xPos", xPos);
-        telemetry.addData("yPos", yPos);
-        telemetry.update();
-        sleep(4000);
+        xPos = xTarget;
+        yPos = yTarget;
 
     }
 

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Disabled
+//@Disabled
 @Autonomous(name = "Mechanum Autonomous Sandbox", group = "lmsbots")
 public class MechanumAutonomousSandbox extends LinearOpMode {
     private DcMotor driveFL, driveFR, driveBL,driveBR;
@@ -36,7 +36,7 @@ public class MechanumAutonomousSandbox extends LinearOpMode {
         if (opModeIsActive())
         {
             // autonomous code goes here
-//            driveTo(24,48);
+            driveTo(24,48);
             driveTo2(48,36);
             //driveTo2(0, 0);
 
